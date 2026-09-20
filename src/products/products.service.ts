@@ -11,11 +11,6 @@ export class ProductsService {
     private readonly productsRepository: Repository<Product>,
   ) {}
 
-  async create(createProductDto: CreateProductDto): Promise<Product> {
-    const product = this.productsRepository.create(createProductDto);
-    return this.productsRepository.save(product);
-  }
-
   async findAll(): Promise<Product[]> {
     return this.productsRepository.find({ order: { id: 'ASC' } });
   }
