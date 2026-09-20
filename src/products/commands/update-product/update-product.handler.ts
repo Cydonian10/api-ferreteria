@@ -25,6 +25,7 @@ export class UpdateProductHandler implements ICommandHandler<UpdateProductComman
       name: command.data.name,
       price: command.data.price,
       stock: command.data.stock,
+      description: command.data.description,
     });
 
     return this.repository.save(product);
