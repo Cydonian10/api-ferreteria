@@ -7,6 +7,8 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import databaseConfig from './config/database.config.js';
 import { ProductsModule } from './products/products.module.js';
+import { SalesModule } from './sales/sales.module.js';
+import { UsersModule } from './users/users.module.js';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { ProductsModule } from './products/products.module.js';
       }),
     }),
     ProductsModule,
+    UsersModule,
+    SalesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
