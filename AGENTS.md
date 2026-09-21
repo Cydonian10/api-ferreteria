@@ -22,6 +22,7 @@
 - This is a single NestJS application rooted at `src/main.ts`, not a monorepo. `src/app.module.ts` wires global configuration, logging, CQRS, PostgreSQL/TypeORM, and feature modules.
 - `src/products/`, `src/users/`, and `src/sales/` are feature boundaries: controllers expose HTTP, `dto/` validates input, `entities/` defines TypeORM models, and `commands/` plus `queries/` contain CQRS messages and handlers.
 - `SalesModule` owns both `Sale` and `SaleDetail`; details are not a separate module because they only exist within a sale. `Sale` belongs to a `User`, and each detail references a `Product`.
+- Sale creation runs through `src/common/database/unit-of-work.ts`; all reads and writes in that workflow must use its transactional `EntityManager`, not regular injected repositories.
 - Authentication is intentionally not implemented yet; users are currently domain records used to associate sales.
 - Controllers dispatch through `CommandBus`/`QueryBus`; handlers own repository reads/writes. For example, `POST /api/products` dispatches `CreateProductCommand` to `CreateProductHandler`, while `GET /api/products` dispatches `FindAllProductsQuery` to `FindAllProductsHandler`.
 - `ProductsService` currently contains the direct `findAll` repository path but is not used by the controller; preserve the CQRS path when changing product endpoints unless the design is intentionally being refactored.
