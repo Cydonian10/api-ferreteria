@@ -1,4 +1,6 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateProductDto } from './create-product.dto.js';
+import { z } from 'zod';
+import { createProductSchema } from './create-product.dto.js';
 
-export class UpdateProductDto extends PartialType(CreateProductDto) {}
+export const updateProductSchema = createProductSchema.partial();
+
+export type UpdateProductDto = z.infer<typeof updateProductSchema>;

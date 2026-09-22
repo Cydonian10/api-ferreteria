@@ -91,7 +91,7 @@ La creación de ventas usa `UnitOfWork`, que inicia una transacción y entrega u
 
 `DatabaseModule` es global y configura TypeORM. Las entidades y migraciones se descubren mediante globs en `src/database/database.options.ts`; no es necesario registrar cada entidad manualmente. `synchronize` está desactivado.
 
-La validación del entorno se realiza con Zod en `ConfigModule`. El `DataSource` del CLI también ejecuta el esquema porque se carga fuera del ciclo de vida de NestJS.
+La validación del entorno y de los payloads HTTP se realiza con Zod. `StandardSchemaValidationPipe` se registra globalmente y cada body declara su esquema mediante `@Body({ schema })`. El `DataSource` del CLI también ejecuta el esquema de entorno porque se carga fuera del ciclo de vida de NestJS.
 
 ## Rutas principales
 

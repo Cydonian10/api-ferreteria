@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, VERSION_NEUTRAL } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserDto } from './dto/create-user.dto.js';
+import { createUserSchema, type CreateUserDto } from './dto/create-user.dto.js';
 import { User } from './entities/user.entity.js';
 import { CreateUserCommand } from './commands/create-user.command.js';
 import { FindAllUsersQuery } from './queries/find-all-users.query.js';
@@ -16,7 +16,9 @@ export class UsersController {
 
   @Post()
   @ApiCreatedResponse({ type: User })
-  create(@Body() dto: CreateUserDto): Promise<User> {
+  create(
+    @Body({ schema: createUserSchema }) dto: CreateUserDto,
+  ): Promise<User> {
     return this.commandBus.execute(new CreateUserCommand(dto));
   }
 

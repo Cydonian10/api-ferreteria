@@ -15,12 +15,18 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateProductDto } from './dto/create-product.dto.js';
+import {
+  createProductSchema,
+  type CreateProductDto,
+} from './dto/create-product.dto.js';
 import { Product } from './entities/product.entity.js';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateProductCommand } from './commands/create-product/create-product.command.js';
 import { FindAllProductsQuery } from './queries/find-all-products/find-all-products.query.js';
-import { UpdateProductDto } from './dto/update-product.dto.js';
+import {
+  updateProductSchema,
+  type UpdateProductDto,
+} from './dto/update-product.dto.js';
 import { UpdateProductCommand } from './commands/update-product/update-product.command.js';
 
 @ApiTags('products')
@@ -33,7 +39,9 @@ export class ProductsController {
 
   @Post()
   @ApiCreatedResponse({ type: Product })
-  create(@Body() dto: CreateProductDto): Promise<Product> {
+  create(
+    @Body({ schema: createProductSchema }) dto: CreateProductDto,
+  ): Promise<Product> {
     return this.commandBus.execute(
       new CreateProductCommand({
         name: dto.name,
@@ -47,7 +55,10 @@ export class ProductsController {
   @Patch(':id')
   @ApiParam({ name: 'id', type: Number })
   @ApiResponse({ type: Product })
-  udpate(@Body() dto: UpdateProductDto, @Param('id', ParseIntPipe) id: number) {
+  udpate(
+    @Body({ schema: updateProductSchema }) dto: UpdateProductDto,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
     return this.commandBus.execute(
       new UpdateProductCommand({
         id: id,

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, VERSION_NEUTRAL } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateSaleDto } from './dto/create-sale.dto.js';
+import { createSaleSchema, type CreateSaleDto } from './dto/create-sale.dto.js';
 import { CreateSaleCommand } from './commands/create-sale.command.js';
 import { FindAllSalesQuery } from './queries/find-all-sales.query.js';
 import { Sale } from './entities/sale.entity.js';
@@ -16,7 +16,9 @@ export class SalesController {
 
   @Post()
   @ApiCreatedResponse({ type: Sale })
-  create(@Body() dto: CreateSaleDto): Promise<Sale> {
+  create(
+    @Body({ schema: createSaleSchema }) dto: CreateSaleDto,
+  ): Promise<Sale> {
     return this.commandBus.execute(new CreateSaleCommand(dto));
   }
 
