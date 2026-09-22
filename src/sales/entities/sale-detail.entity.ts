@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { Product } from '../../products/entities/product.entity.js';
 import { Sale } from './sale.entity.js';
 
@@ -22,8 +23,8 @@ export class SaleDetail {
   subtotal: number;
 
   @ManyToOne(() => Sale, (sale) => sale.details, { nullable: false })
-  sale: Sale;
+  sale: Relation<Sale>;
 
   @ManyToOne(() => Product, { nullable: false })
-  product: Product;
+  product: Relation<Product>;
 }

@@ -6,6 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { Sale } from '../../sales/entities/sale.entity.js';
 
 @Entity('users')
@@ -31,5 +32,5 @@ export class User {
   createdAt: Date;
 
   @OneToMany(() => Sale, (sale) => sale.user)
-  sales: Sale[];
+  sales: Relation<Sale[]>;
 }

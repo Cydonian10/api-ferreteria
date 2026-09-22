@@ -7,6 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { User } from '../../users/entities/user.entity.js';
 import { SaleDetail } from './sale-detail.entity.js';
 
@@ -35,10 +36,10 @@ export class Sale {
   createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.sales, { nullable: false })
-  user: User;
+  user: Relation<User>;
 
   @OneToMany(() => SaleDetail, (detail) => detail.sale, {
     cascade: true,
   })
-  details: SaleDetail[];
+  details: Relation<SaleDetail[]>;
 }
