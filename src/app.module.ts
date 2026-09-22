@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import databaseConfig from './config/database.config.js';
+import { envSchema } from './config/env.schema.js';
+import { DatabaseModule } from './database/database.module.js';
 import { ProductsModule } from './products/products.module.js';
 import { SalesModule } from './sales/sales.module.js';
 import { UsersModule } from './users/users.module.js';
@@ -28,21 +29,9 @@ import { UsersModule } from './users/users.module.js';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [databaseConfig],
+      validate: (config) => envSchema.parse(config),
     }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.getOrThrow<string>('database.host'),
-        port: configService.getOrThrow<number>('database.port'),
-        username: configService.getOrThrow<string>('database.username'),
-        password: configService.getOrThrow<string>('database.password'),
-        database: configService.getOrThrow<string>('database.database'),
-        autoLoadEntities: true,
-        // Solo para aprendizaje local: crea/actualiza tablas desde las entidades.
-        synchronize: true,
-      }),
-    }),
+    DatabaseModule,
     ProductsModule,
     UsersModule,
     SalesModule,
