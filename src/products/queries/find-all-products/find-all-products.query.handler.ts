@@ -11,7 +11,7 @@ export class FindAllProductsHandler implements IQueryHandler<FindAllProductsQuer
     private readonly repository: Repository<Product>,
   ) {}
 
-  public execute(query: FindAllProductsQuery): Promise<Product[]> {
+  public execute(_query: FindAllProductsQuery): Promise<Product[]> {
     return this.repository.find({
       order: { id: 'ASC' },
     });
