@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "database-schema-designer": {
+      "source": "borghei/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering/database-schema-designer/SKILL.md",
+      "computedHash": "807b2e91d17965ba4e4353174ccc61d1b26897a45c2aecde9d5d0d25137e9a4a"
+    }
+  }
+}
